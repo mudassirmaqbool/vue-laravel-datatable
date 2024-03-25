@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia'
 import type { LaravelResource, Product } from '@/types'
 import axios, { type AxiosResponse } from 'axios'
+import { ref } from 'vue'
 
 export const useRootStore = defineStore('root', () => {
+
+  const name = ref('John Doe')
+
+
 
   const getData = async (): Promise<AxiosResponse<LaravelResource<Product>>> => {
     return await axios.get('http://datatable-backend.test/api/products');
@@ -39,6 +44,7 @@ export const useRootStore = defineStore('root', () => {
   // }
 
   return {
-    getData
+    getData,
+    name
   }
 })
