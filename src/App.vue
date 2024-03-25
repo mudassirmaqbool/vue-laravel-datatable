@@ -57,7 +57,7 @@ onMounted(() => {
     <main>
       <div v-if="products" class="w-[1000px] mx-auto">
 
-        <data-table :resource="products" :columns="columns"> 
+        <data-table v-model="products" :columns="columns"> 
           <template #body="{rows}" >
             <tr v-for="product in (rows as Product[])" :key="product.id">
               <td>{{product.name}}</td>
@@ -70,7 +70,7 @@ onMounted(() => {
             </tr>
           </template>
         </data-table>
-        
+
 
       </div>
     </main>

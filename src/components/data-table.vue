@@ -1,39 +1,34 @@
 <script lang="ts" setup>
 import type { Column, LaravelResource } from '@/types'
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 
 type Props = {
-  resource: LaravelResource<any>
   columns: Column[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
+
+const resource = defineModel<LaravelResource<any>>({required: true});
 
 const loadingMore = ref(false)
 const loadMore = async () => {
-    if(!props.resource.next_page_url || !props.resource?.data) return
-    console.log('load more')
+    if(!resource.value.next_page_url || !resource.value.data) return
+    console.log('load more', resource.value)
 
     loadingMore.value = true
     try {
-        const { data } = await axios.get(props.resource.next_page_url)
+        const { data } = await axios.get(resource.value.next_page_url)
         console.log(data)
-        // props.resource.data.push()
-        
-        // props.resource.next_page_url = data.next_page_url
+        resource.value.data.push(...data.data)
+        resource.value.next_page_url = data.next_page_url
     } catch (error) {
         console.log(error)
     }
     loadingMore.value = false
-    
 }
 
-
-onMounted(() => {
-  console.log('mounted', typeof props.resource.data)
-})
 
 </script>
 
